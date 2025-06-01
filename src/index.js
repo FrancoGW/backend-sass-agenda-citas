@@ -20,7 +20,7 @@ const allowedOrigins = [
   'https://gym-client-manager.vercel.app',
   'http://localhost:3000',
   'http://localhost:3001',
-  // Añade aquí cualquier otro dominio desde el que necesites acceder
+  // Añade aquí cualquier otro dominio desde el que necesites accederasdsadasdasd
 ];
 
 app.use(cors({
