@@ -15,7 +15,39 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+const allowedOrigins = [
+  'https://v0.dev',
+  'https://gym-client-manager.vercel.app',
+  'http://localhost:3000',
+  'http://localhost:3001',
+  // Añade aquí cualquier otro dominio desde el que necesites acceder
+];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'La política CORS de este sitio no permite acceso desde el origen especificado.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  next();
+});
+
 app.use(helmet());
 app.use(morgan('dev'));
 
