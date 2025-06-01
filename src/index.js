@@ -30,6 +30,21 @@ app.use('/api/users', userRoutes);
 app.use('/api/memberships', membershipRoutes);
 app.use('/api/appointments', appointmentRoutes);
 
+// Ruta de salud básica
+app.get('/api', (req, res) => {
+  res.json({ message: 'API funcionando' });
+});
+
+// Ruta de health check
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+// Ruta de status
+app.get('/api/status', (req, res) => {
+  res.json({ status: 'ok', uptime: process.uptime() });
+});
+
 // Manejo de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);
